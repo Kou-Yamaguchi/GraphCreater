@@ -81,12 +81,12 @@ class Cell(Cell_frame):
     self.config(bg="white")
 
 class Table_widget(tk.Frame):
-  def __init__(self, master=None):
+  def __init__(self, master=None, row=0, column=0):
     super().__init__(master)
     self.cell_canvas_frame = tk.Frame(self)
-    self.cell_canvas = tk.Canvas(self.cell_canvas_frame, width=600, height=400)
+    self.cell_canvas = tk.Canvas(self.cell_canvas_frame, width=600, height=260)
     self.scroll_frame = tk.Frame(self.cell_canvas)
-    self.scroll_canvas_v = tk.Canvas(self, width=10, height=400)
+    self.scroll_canvas_v = tk.Canvas(self, width=10, height=260)
     self.scroll_canvas_h = tk.Canvas(self, width=600)
     self.scroll_canvas_v_frame = tk.Frame(self.scroll_canvas_v)
     self.scroll_canvas_h_frame = tk.Frame(self.scroll_canvas_h)
@@ -110,7 +110,7 @@ class Table_widget(tk.Frame):
     # self.scrollbar_y.pack(side=tk.RIGHT, fill=tk.Y, expand=True)
     self.scrollbar_y.place(relx=0.975, rely=0, relheight=1, relwidth=0.025)
     self.scrollbar_x = tk.Scrollbar(self.cell_canvas_frame, orient="horizontal", command=self.sync_scroll_x)
-    self.scrollbar_x.place(relx=0, rely=0.96, relheight=0.04, relwidth=1)
+    self.scrollbar_x.place(relx=0, rely=0.95, relheight=0.05, relwidth=1)
     # self.scrollbar_x.pack(side=tk.BOTTOM, fill=tk.X, expand=True)
 
     self.cell_canvas.configure(scrollregion=self.cell_canvas.bbox("all"))
@@ -125,7 +125,8 @@ class Table_widget(tk.Frame):
     self.scroll_canvas_h.grid(column=1, row=0)
     self.cell_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
     self.cell_canvas_frame.grid(column=1, columnspan=2, row=1, rowspan=2, padx=0, pady=0)
-    self.pack()
+    # self.pack()
+    self.grid(row=row, column=column)
     self.update_idletasks()
     self.scroll_canvas_h.config(height=self.scroll_canvas_h_frame.winfo_reqheight())
     self.scroll_canvas_v.config(width=self.scroll_canvas_v_frame.winfo_reqwidth())

@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 def set():
-  plt.rcParams["figure.figsize"] = [4.8,3.2]  # 図の縦横のサイズ([横(inch),縦(inch)])
+  plt.rcParams["figure.figsize"] = [4,2.8]  # 図の縦横のサイズ([横(inch),縦(inch)])
   # plt.rcParams["figure.dpi"] = 100            # dpi(dots per inch)解像度
   plt.rcParams["figure.autolayout"] = False   # レイアウトの自動調整を利用するかどうか
   plt.rcParams["figure.subplot.left"] = 0.15  # 余白
