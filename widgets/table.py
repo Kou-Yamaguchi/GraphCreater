@@ -38,17 +38,10 @@ class Row(Cell_frame):
     self.config(bg=self.bg)
     self.label.config(bg=self.bg, width=2)
 
-#カラム(一番上のやつ)
-class Column(Cell_frame):
-  def __init__(self, column, bgcolor, master, text):
-    super().__init__(column=column, bgcolor=bgcolor, master=master, text=text)
-    self.config(bg=self.bg)
-    self.label.config(bg=self.bg)
-
 #セル
 class Cell(Cell_frame):
-  def __init__(self, row, column, master, text):
-    super().__init__(row=row, column=column, master=master, text=text)
+  def __init__(self, row, column, master, text, bgcolor="white"):
+    super().__init__(row=row, column=column, bgcolor=bgcolor, master=master, text=text)
     self.label.bind("<ButtonPress-1>", self.select_cell)
     self.label.bind("<Double-1>", self.edit_cell)
     self.label.bind("<Enter>", self.enter_cell)
@@ -60,7 +53,7 @@ class Cell(Cell_frame):
 
   def leave_cell(self, event):
     if not self.selected:
-      self.config(bg="white")
+      self.config(bg=self.bg)
 
   def select_cell(self, event):
     Cell_frame.reset_select(self)
@@ -78,10 +71,27 @@ class Cell(Cell_frame):
     self.entry.destroy()
     self.label.pack(padx=2, pady=2)
     self.selected = False
-    self.config(bg="white")
+    self.config(bg=self.bg)
+
+#カラム(一番上のやつ)
+# class Column(Cell_frame):
+#   def __init__(self, column, bgcolor, master, text):
+#     super().__init__(column=column, bgcolor=bgcolor, master=master, text=text)
+#     self.config(bg=self.bg)
+#     self.label.config(bg=self.bg)
+
+class Column_(Cell):
+  def __init__(self, column, bgcolor, master, text):
+    super().__init__(row=0, column=column, bgcolor=bgcolor, master=master, text=text)
+    self.config(bg=self.bg)
+    self.label.config(bg=self.bg)
+    self.label.bind("<ButtonPress-3>", self.select)
+
+  def select(self, event):
+    super().select_cell(event)
 
 class Table_widget(tk.Frame):
-  def __init__(self, master=None, row=0, column=0):
+  def __init__(self, master=None, widget_row=0, widget_column=0):
     super().__init__(master)
     self.cell_canvas_frame = tk.Frame(self)
     self.cell_canvas = tk.Canvas(self.cell_canvas_frame, width=600, height=260)
@@ -92,7 +102,7 @@ class Table_widget(tk.Frame):
     self.scroll_canvas_h_frame = tk.Frame(self.scroll_canvas_h)
 
     for column in range(10):
-      Column(column=column, bgcolor="lightgray", master=self.scroll_canvas_h_frame, text=None)
+      Column_(column=column, bgcolor="lightgray", master=self.scroll_canvas_h_frame, text=None)
     self.scroll_canvas_h_frame.pack(padx=0, pady=0)
     for row in range(50):
       Row(row=row, bgcolor="lightgray", master=self.scroll_canvas_v_frame, text=row+1)
@@ -126,7 +136,7 @@ class Table_widget(tk.Frame):
     self.cell_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
     self.cell_canvas_frame.grid(column=1, columnspan=2, row=1, rowspan=2, padx=0, pady=0)
     # self.pack()
-    self.grid(row=row, column=column)
+    self.grid(row=widget_row, column=widget_column)
     self.update_idletasks()
     self.scroll_canvas_h.config(height=self.scroll_canvas_h_frame.winfo_reqheight())
     self.scroll_canvas_v.config(width=self.scroll_canvas_v_frame.winfo_reqwidth())

@@ -12,16 +12,17 @@ class Application(tk.Frame):
     super().__init__(master)
     self.master = master
     self.master.title('graph')
-
-    frame_graph = tk.Frame(self.master, width=640, height=480, relief=tk.RIDGE, bd=5)
+    self.config(relief="groove",bd=2)
+    frame_graph = tk.Frame(self, width=640, height=480, relief=tk.RIDGE, bd=5)
     # frame_graph.propagate(False)
 
     self.option_widget = OptionWidget(frame_graph)
     self.graph_widget = Plot_Widget(self.option_widget, frame_graph)
 
     # frame_graph.pack(anchor=tk.NW)
-    Table_widget(self.master, row=1)
     frame_graph.grid(row=0, column=0)
+    Table_widget(self, widget_row=1)
+    self.pack()
 
     self.master.update_idletasks()
 
